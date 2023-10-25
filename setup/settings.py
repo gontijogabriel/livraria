@@ -16,6 +16,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['livraria-django-c31d1e28d718.herokuapp.com', 'localhost']
 
+CSRF_TRUSTED_ORIGINS = ['https://livraria-django-c31d1e28d718.herokuapp.com']
 
 # Application definition
 
