@@ -9,7 +9,7 @@ import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from core.serializers import CategoriasSerializer
+from core.serializers import CategoriaSerializer
 
 @method_decorator(csrf_exempt, name="dispatch")
 class CategoriaView(View):
@@ -52,11 +52,11 @@ class CategoriaView(View):
 class CategoriasList(APIView):
     def get(self, request):
         categorias = Categoria.objects.all()
-        serializer = CategoriasSerializer(categorias, many=True)
+        serializer = CategoriaSerializer(categorias, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
-        seralizer = CategoriasSerializer(data=request.data)
+        seralizer = CategoriaSerializer(data=request.data)
         if seralizer.is_valid():
             seralizer.save()
             return Response(seralizer.data, status=status.HTTP_201_CREATED)
@@ -66,8 +66,9 @@ class CategoriasList(APIView):
 
 class CategoriaDetail(APIView):
     def get(self,request, id):
-        #categoria = get_list_or_404(Categoria.objects.all(), id=id)
-        categoria = get_list_or_404(Categoria, id=id)
-        serializer = CategoriasSerializer(categoria)
+        print(id)
+        categoria = Categoria.objects.filter(id=id)
+        print(categoria.descricao)
+        serializer = CategoriaSerializer(categoria)
         return Response(serializer.data)
         
