@@ -14,9 +14,9 @@ SECRET_KEY = 'django-insecure-x&phqin*o6rb)_u#u7#_k1wsx&da33(#=@sne8!3vz^jk2spdw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['livraria-django-c31d1e28d718.herokuapp.com', 'localhost']
+# ALLOWED_HOSTS = ['livraria-django-c31d1e28d718.herokuapp.com', 'localhost', '*']
 
-CSRF_TRUSTED_ORIGINS = ['https://livraria-django-c31d1e28d718.herokuapp.com']
+# CSRF_TRUSTED_ORIGINS = ['https://livraria-django-c31d1e28d718.herokuapp.com']
 
 # Application definition
 
@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'drf_yasg',
     
     'core',
 ]
@@ -43,6 +45,10 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
 
 ROOT_URLCONF = 'setup.urls'
 
