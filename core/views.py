@@ -9,47 +9,17 @@ import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
 from core.serializers import CategoriaSerializer
+from drf_yasg import openapi
 
-@method_decorator(csrf_exempt, name="dispatch")
-class CategoriaView(View):
-    def get(self, request, id=None):
-        if id:
-            query_set = Categoria.objects.get(id=id)
-            data = {}
-            data['id'] = query_set.id
-            data['descricao'] = query_set.descricao
-            return JsonResponse(data)
-        
-        else:
-            data = list(Categoria.objects.values())
-            formatted_data = json.dumps(data, ensure_ascii=False)
-            return HttpResponse(formatted_data, content_type="application/json")
-    
-    def post(self, request):
-        json_data = json.loads(request.body)
-        nova_categoria = Categoria.objects.create(**json_data)
-        data = {"id": nova_categoria.id, "descricao": nova_categoria.descricao}
-        return JsonResponse(data)
-    
-    def patch(self, request, id):
-        json_data = json.loads(request.body)
-        query_set = Categoria.objects.get(id=id)
-        query_set = json_data['descricao'] if 'descricao' in json_data else query_set.descricao
-        query_set.save()
-        data = {}
-        data['id'] = query_set.index
-        data['descricao'] = query_set.descricao
-        return  JsonResponse(data)
-    
-    def delete(self, request, id):
-        query_set = Categoria.objects.get(id=id)
-        query_set.delete()
-        data = {'mensagem': "Item deletado!"}
-        return JsonResponse(data)
-    
     
 class CategoriasList(APIView):
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('filtro', openapi.IN_QUERY, type=openapi.TYPE_STRING, description='Filtro para categorias', request_body=True)
+        ]
+    )
     def get(self, request):
         categorias = Categoria.objects.all()
         serializer = CategoriaSerializer(categorias, many=True)
@@ -66,9 +36,9 @@ class CategoriasList(APIView):
 
 class CategoriaDetail(APIView):
     def get(self,request, id):
-        print(id)
-        categoria = Categoria.objects.filter(id=id)
-        print(categoria.descricao)
-        serializer = CategoriaSerializer(categoria)
-        return Response(serializer.data)
-        
+        query_set = Categoria.objects.get(id=id)
+        data = {}
+        data['id'] = query_set.id
+        data['descricao'] = query_set.descricao
+        return JsonResponse(data)
+    
