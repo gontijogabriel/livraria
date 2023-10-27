@@ -12,7 +12,7 @@ schema_view = get_schema_view(
         title="Livraria API",
         default_version='v1',
         description="",
-        terms_of_service="https://www.< link livraria >.com/api/",
+        terms_of_service="https://www.livros.com/api/",
         contact=openapi.Contact(email="email"),
         license=openapi.License(name="name"),
     ),

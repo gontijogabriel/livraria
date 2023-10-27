@@ -1,4 +1,6 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import (
+    ModelViewSet
+)
 from drf_yasg import openapi
 
 from core.serializers import (
@@ -8,8 +10,13 @@ from core.serializers import (
     LivroSerializer,
     LivroDetailSerializer,
     CompraSerializer,
-    ItensCompraSerializer
+    ItensCompraSerializer,
+    ItensCompraDetailSerializer, 
+#    CompraDetailSerializer,
+    UserDetailSerializer,
+    UserSerializer
 )
+
 from core.models import ( 
     Categoria, 
     Editora, 
@@ -18,6 +25,26 @@ from core.models import (
     Compra,
     ItensCompra
 )
+
+from django.contrib.auth.models import User
+
+
+class UserViewSet(ModelViewSet):
+    """Usuario"""
+    queryset = User.objects.all()
+    
+    def get_serializer_class(self):
+        if self.action == "list" or self.action == "retrieve":
+            return UserDetailSerializer
+
+        return UserSerializer
+
+
+class AutorViewSet(ModelViewSet):
+    """Autor"""
+    queryset = Autor.objects.all()
+    serializer_class = AutorSerializer
+
 
 class CategoriaViewSet(ModelViewSet):
     """Categoria"""
@@ -30,10 +57,6 @@ class EditoraViewSet(ModelViewSet):
     queryset = Editora.objects.all()
     serializer_class = EditoraSerializer
 
-class AutorViewSet(ModelViewSet):
-    """Autor"""
-    queryset = Autor.objects.all()
-    serializer_class = AutorSerializer
 
 class LivroViewSet(ModelViewSet):
     """Livro"""
@@ -45,13 +68,26 @@ class LivroViewSet(ModelViewSet):
 
         return LivroSerializer
 
+
 class CompraViewSet(ModelViewSet):
     """Compra"""
     queryset = Compra.objects.all()
     serializer_class = CompraSerializer
+    
+    # def get_serializer_class(self):
+    #     if self.action == "list" or self.action == "retrive":
+    #        return CompraDetailSerializer
+    
+    # return CompraSerializer
 
 
 class ItensCompraViewSet(ModelViewSet):
     """Compra"""
     queryset = ItensCompra.objects.all()
-    serializer_class = ItensCompraSerializer
+    
+    def get_serializer_class(self):
+        if self.action == "list" or self.action == "retrive":
+            return ItensCompraDetailSerializer
+        
+        # return ItensCompraSerializer
+        return ItensCompraDetailSerializer

@@ -10,6 +10,7 @@ router.register(r'autor', views.AutorViewSet)
 router.register(r'livros', views.LivroViewSet)
 router.register(r'compra', views.CompraViewSet)
 router.register(r'itens-compra', views.ItensCompraViewSet)
+router.register(r'usuario', views.UserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
